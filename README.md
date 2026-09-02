@@ -1,96 +1,284 @@
-# WeatherAnalyticsApp
+# Weather Analytics App
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+A full-stack weather analytics application built with Angular on the frontend and NestJS on the backend. The app fetches city weather data from OpenWeatherMap, calculates a comfort score for each city, ranks the cities by comfort, and exposes the results through a protected API secured by Auth0 JWT validation.
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+## Project Overview
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+This project includes:
 
-## Run tasks
+- Angular frontend for user authentication and dashboard visualization
+- NestJS backend for weather retrieval and ranking logic
+- Auth0-based access protection for API requests
+- In-memory cache for reducing repeated API calls and improving response time
+- Comfort scoring model to rank cities based on weather conditions
 
-To run tasks with Nx use:
+## Tech Stack
 
-```sh
-npx nx <target> <project-name>
+- Frontend: Angular + Nx
+- Backend: NestJS + Nx
+- Authentication: Auth0
+- Weather API: OpenWeatherMap
+- Caching: in-memory Map with TTL-based expiry
+
+---
+
+## Setup Instructions
+
+### 1. Install dependencies
+
+From the project root:
+
+```bash
+npm install
 ```
 
-For example:
+### 2. Configure environment variables
 
-```sh
-npx nx build myproject
+Create a `.env` file in the backend project root (`apps/weather-analytics-nest-be/.env`) or `.env.local` depending on your setup.
+
+Example:
+
+```bash
+OPENWEATHER_API_KEY=your_openweather_api_key
+AUTH0_DOMAIN=dev-deyrn1jbhpjqwz4m.us.auth0.com
+AUTH0_AUDIENCE=https://api.weather-analytics.com
+AUTH0_ISSUER=https://dev-deyrn1jbhpjqwz4m.us.auth0.com/
+CACHE_TTL=300
 ```
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+The frontend Auth0 settings are supplied via `apps/weather-analytics-angular-fe/auth_config.json`:
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Add new projects
-
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
-
-To install a new plugin you can use the `nx add` command. Here's an example of adding the React plugin:
-```sh
-npx nx add @nx/react
+```json
+{
+  "domain": "dev-deyrn1jbhpjqwz4m.us.auth0.com",
+  "clientId": "drOBE3MjFMxFAu2bSQwKSXhFrGGbwwl6",
+  "Auth0Audiance": "https://api.weather-analytics.com"
+}
 ```
 
-Use the plugin's generator to create new projects. For example, to create a new React app or library:
+### 3. Run the backend
 
-```sh
-# Generate an app
-npx nx g @nx/react:app demo
-
-# Generate a library
-npx nx g @nx/react:lib some-lib
+```bash
+nx run weather-analytics-nest-be:serve
 ```
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+The API runs on:
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Set up CI!
-
-### Step 1
-
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
+```bash
+http://localhost:3000/api
 ```
 
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
+### 4. Run the frontend
 
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+Open a second terminal and run:
 
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
+```bash
+nx run weather-analytics-angular-fe:serve
 ```
 
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+The app will be available at the Angular dev server URL, typically:
 
-## Install Nx Console
+```bash
+http://localhost:4200
+```
 
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
+### 5. Authentication flow
 
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+The weather API is protected by JWT validation through the NestJS guard. Users must authenticate via Auth0 before they can call the weather endpoint.
 
-## Useful links
+---
 
-Learn more:
+## Comfort Index Formula
 
-- [Learn more about this workspace setup](https://nx.dev/getting-started/intro#learn-nx?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+The backend computes a comfort score for each city using a weighted sum of normalized sub-scores. The formula used in the code is:
 
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+```text
+comfortScore =
+  temperatureScore * 0.4 +
+  humidityScore * 0.3 +
+  windScore * 0.2 +
+  cloudinessScore * 0.1
+```
+
+Each sub-score is calculated separately and then clamped to the range 0 to 100 before aggregation.
+
+### Individual component formulas
+
+#### 1) Temperature score
+
+```text
+temperatureScore = clamp(100 - abs(temperature - 24) * 5)
+```
+
+- Ideal temperature target: 24°C
+- A value close to 24°C receives a higher score
+- The score drops by 5 points for each 1°C away from the ideal
+
+#### 2) Humidity score
+
+```text
+humidityScore = clamp(100 - abs(humidity - 50) * 2)
+```
+
+- Ideal humidity target: 50%
+- High or low humidity away from the midpoint reduces comfort
+- Humidity is penalized more gently than temperature because people generally tolerate a wider range of humidity than temperature swings
+
+#### 3) Wind speed score
+
+```text
+windScore = clamp(100 - abs(windSpeed - 2.5) * 20)
+```
+
+- Ideal wind speed target: 2.5 m/s
+- Wind is weighted as a moderate factor since too much wind can feel uncomfortable, but a gentle breeze is often pleasant
+- A 1 m/s deviation reduces the score by 20 points
+
+#### 4) Cloudiness score
+
+```text
+cloudinessScore = clamp(100 - abs(cloudiness - 30))
+```
+
+- Ideal cloudiness target: 30%
+- Cloud cover affects the perceived quality of the day
+- Moderate cloudiness is considered more comfortable than either fully clear or heavily overcast conditions
+
+### Clamp behavior
+
+```text
+clamp(value) = max(0, min(100, value))
+```
+
+This keeps the final score in a realistic 0–100 range and prevents unrealistic negative or inflated values.
+
+---
+
+## Why These Weights Were Chosen
+
+The scoring model is intentionally heuristic rather than a full meteorological model. The weights reflect the relative importance of each parameter to human comfort:
+
+- Temperature: 40%
+  - Most important because it directly affects how hot or cold a person feels.
+- Humidity: 30%
+  - Affects perceived temperature and air quality comfort.
+- Wind: 20%
+  - Important, especially for cooling effect or wind chill, but less dominant than temperature.
+- Cloudiness: 10%
+  - Influences sunlight and perceived pleasantness, but is less impactful than the first three variables.
+
+This weighting favors the factors most strongly associated with day-to-day comfort while still recognizing that wind and cloud coverage matter.
+
+---
+
+## Trade-offs Considered
+
+Several design decisions were made to balance simplicity, speed, and usability:
+
+1. Simple distance-from-ideal model
+   - The formula is easy to explain and interpret.
+   - It does not attempt to model every physiological or environmental factor in detail.
+
+2. Linear penalty strategy
+   - A straight-line penalty makes the calculation transparent and easy to debug.
+   - It does not capture non-linear comfort behavior such as extreme heat being much worse than a moderate temperature deviation.
+
+3. Fixed ideal values for a general audience
+   - The model assumes an average comfort preference rather than a city-specific or personal preference profile.
+   - This makes the score broadly useful but not perfectly individualized.
+
+4. Normalized 0–100 scoring
+   - Makes it easy to rank cities and present results in a UI.
+   - It is a practical scoring scale but not a scientifically calibrated thermal comfort index like UTCI or Heat Index.
+
+---
+
+## Cache Design Explanation
+
+The backend uses a simple in-memory cache implemented with a JavaScript `Map` structure.
+
+### Cache service behavior
+
+- Each cache entry stores:
+  - the value
+  - an expiry timestamp
+- TTL is configured using `CACHE_TTL` and defaults to 300 seconds
+- When a cached item is requested:
+  - if the entry is missing, the system returns `null`
+  - if the timestamp has expired, the item is removed and treated as a miss
+
+### Why the cache is used
+
+Two main cache layers are used:
+
+1. Raw weather data cache
+   - Key format: `weather:raw:${cityCode}`
+   - Prevents repeated requests to the OpenWeatherMap API for the same city within the TTL window
+
+2. Processed analytics cache
+   - Key: `weather:analytics`
+   - Stores the ranked list of cities after comfort scores are calculated
+   - Avoids re-running expensive city-by-city weather fetches and sorting logic on every request
+
+### Benefits
+
+- Reduced API call volume
+- Lower latency for repeated requests
+- More stable performance under repeated dashboard refreshes
+
+### Trade-off
+
+The cache is stored in process memory, so it is not distributed across multiple backend instances. This is acceptable for a single-node or local deployment but not suitable for multi-instance production scaling without replacing it with Redis or another shared cache.
+
+---
+
+## Known Limitations
+
+This current implementation is intentionally lightweight but has several limitations:
+
+- It is a heuristic comfort score, not a meteorological standard such as UTCI or Heat Index.
+- The model uses a single “ideal” value for each metric, which may not match every user or region.
+- It does not consider precipitation, UV index, visibility quality beyond raw values, or other weather phenomena that can strongly affect comfort.
+- The in-memory cache is local to a single runtime and is lost if the server restarts.
+- The weather API requires a valid OpenWeatherMap key and may fail if the API is unavailable or rate-limited.
+- The backend expects Auth0 configuration to be properly set up for secure access.
+
+---
+
+## API Behavior Summary
+
+The weather endpoint returns a list of cities sorted by comfort score in descending order, with each item containing:
+
+- city code
+- city name
+- temperature
+- feels-like temperature
+- humidity
+- wind speed
+- cloudiness
+- pressure
+- visibility
+- weather status
+- comfort score
+- rank
+
+The endpoint is protected by JWT authentication using Auth0.
+
+---
+
+## Run and Validate
+
+To run the app end-to-end:
+
+```bash
+nx run weather-analytics-nest-be:serve
+nx run weather-analytics-angular-fe:serve
+```
+
+Then open the frontend and sign in to retrieve the ranked weather analysis.
+
+---
+
+## Summary
+
+This project combines real weather data, a transparent comfort formula, and a lightweight cache strategy to create a practical city-ranking dashboard. The score is intentionally easy to interpret and tune, which makes it suitable for demos, early product versions, and iterative improvements based on user feedback.
