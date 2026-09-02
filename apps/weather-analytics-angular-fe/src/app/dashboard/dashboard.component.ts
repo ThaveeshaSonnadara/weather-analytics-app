@@ -31,15 +31,24 @@ export class DashboardComponent implements OnInit {
   lastUpdated: Date | null = null;
 
   ngOnInit(): void {
-    this.loadWeather();
+    this.loadWeather(true);
   }
 
-  loadWeather(): void {
-    this.loading = true;
+  loadWeather(showLoader = false): void {
+    if (showLoader) {
+      this.loading = true;
+    }
+
     this.error = null;
 
     this.weatherService.getWeatherAnalytics().subscribe({
       next: (response) => {
+        if (response.cached && this.cities.length > 0 && !showLoader) {
+          this.loading = false;
+          this.cdr.detectChanges();
+          return;
+        }
+
         this.cities = response.cities;
 
         this.lastUpdated = new Date();
