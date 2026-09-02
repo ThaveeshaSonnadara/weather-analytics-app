@@ -54,5 +54,19 @@
         "CityName": "Oslo",
         "Temp": "-3.9",
         "Status": "Clear"
+    },
+    {
+        "id": 9,
+        "CityCode": "5174095",
+        "CityName": "Toronto",
+        "Temp": "10.1",
+        "Status": "Mist"
+    },
+    {
+        "id": 10,
+        "CityCode": "2643741",
+        "CityName": "City of London",
+        "Temp": "27.3",
+        "Status": "Rain"
     }
 ]
