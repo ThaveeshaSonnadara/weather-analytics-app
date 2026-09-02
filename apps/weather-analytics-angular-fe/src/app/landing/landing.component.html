@@ -1,0 +1,47 @@
+<div class="landing-page">
+  @if (auth.isLoading$ | async) {
+    <div class="auth-card">
+      <div class="spinner"></div>
+      <p>Loading...</p>
+    </div>
+  } @else if (auth.error$ | async; as error) {
+    <div class="auth-card error-card">
+      <h1>Something went wrong</h1>
+
+      <p>{{ error.message }}</p>
+    </div>
+  } @else if (auth.isAuthenticated$ | async) {
+    <div class="auth-card">
+      <div class="logo">☁️</div>
+
+      <h1>Weather Analytics</h1>
+
+      <p>You're already signed in.</p>
+
+      <button
+        type="button"
+        class="dashboard-button"
+        (click)="this.goToDashboard()"
+      >
+        Open Dashboard
+      </button>
+
+      <app-logout-button />
+    </div>
+  } @else {
+    <div class="auth-card">
+      <div class="logo">☁️</div>
+
+      <p class="eyebrow">WEATHER ANALYTICS</p>
+
+      <h1>Comfort Index</h1>
+
+      <p class="description">
+        Compare weather conditions across cities and discover where the most
+        comfortable conditions are right now.
+      </p>
+
+      <app-login-button />
+    </div>
+  }
+</div>

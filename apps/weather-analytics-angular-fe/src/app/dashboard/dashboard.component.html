@@ -1,0 +1,179 @@
+<div class="dashboard">
+  <!-- Header -->
+  <header class="dashboard-header">
+    <div class="header-content">
+      <div>
+        <p class="eyebrow">WEATHER ANALYTICS</p>
+
+        <h1>Comfort Index</h1>
+
+        <p class="subtitle">
+          Weather conditions ranked from most comfortable to least comfortable.
+        </p>
+      </div>
+
+      <div class="header-actions">
+        <button
+          type="button"
+          class="refresh-button"
+          (click)="loadWeather()"
+          [disabled]="loading"
+        >
+          ↻ Refresh
+        </button>
+
+        <app-logout-button />
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="dashboard-content">
+    <!-- Loading -->
+    @if (loading) {
+      <div class="state-card">
+        <div class="spinner"></div>
+
+        <h2>Loading weather data</h2>
+
+        <p>Fetching the latest weather conditions...</p>
+      </div>
+    }
+
+    <!-- Error -->
+    @else if (error) {
+      <div class="state-card error-card">
+        <div class="state-icon">⚠️</div>
+
+        <h2>Unable to load weather</h2>
+
+        <p>
+          {{ error }}
+        </p>
+
+        <button type="button" class="retry-button" (click)="loadWeather()">
+          Try Again
+        </button>
+      </div>
+    }
+
+    <!-- Data -->
+    @else {
+      <section class="summary">
+        <div class="summary-card">
+          <span class="summary-label"> CITIES </span>
+
+          <strong>
+            {{ cities.length }}
+          </strong>
+        </div>
+
+        <div class="summary-card">
+          <span class="summary-label"> MOST COMFORTABLE </span>
+
+          <strong>
+            {{ cities[0]?.cityName || '—' }}
+          </strong>
+        </div>
+
+        <div class="summary-card">
+          <span class="summary-label"> TOP SCORE </span>
+
+          <strong>
+            {{ cities[0]?.comfortScore || '—' }}
+          </strong>
+        </div>
+      </section>
+
+      <!-- Desktop / Mobile Cards -->
+      <section class="city-list">
+        @for (city of cities; track city.cityCode; let i = $index) {
+          <article class="city-card">
+            <!-- Rank -->
+            <div class="rank">
+              <span class="rank-label"> RANK </span>
+
+              <span class="rank-number"> #{{ city.rank }} </span>
+            </div>
+
+            <!-- City -->
+            <div class="city-info">
+              <div class="weather-icon">
+                {{ getWeatherIcon(city.weatherStatus) }}
+              </div>
+
+              <div>
+                <h2>
+                  {{ city.cityName }}
+                </h2>
+
+                <p>
+                  {{ city.description || city.weatherStatus }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Temperature -->
+            <div class="temperature">
+              <span class="temperature-value">
+                {{ city.temperature | number: '1.0-1' }}°C
+              </span>
+
+              @if (city.feelsLike !== undefined) {
+                <span class="feels-like">
+                  Feels like
+                  {{ city.feelsLike | number: '1.0-1' }}°C
+                </span>
+              }
+            </div>
+
+            <!-- Weather details -->
+            <div class="weather-details">
+              @if (city.humidity !== undefined) {
+                <div class="detail">
+                  <span>Humidity</span>
+                  <strong> {{ city.humidity }}% </strong>
+                </div>
+              }
+
+              @if (city.windSpeed !== undefined) {
+                <div class="detail">
+                  <span>Wind</span>
+                  <strong> {{ city.windSpeed | number: '1.0-1' }} m/s </strong>
+                </div>
+              }
+
+              @if (city.cloudiness !== undefined) {
+                <div class="detail">
+                  <span>Clouds</span>
+                  <strong> {{ city.cloudiness }}% </strong>
+                </div>
+              }
+            </div>
+
+            <!-- Comfort Score -->
+            <div
+              class="comfort-score"
+              [class]="getScoreClass(city.comfortScore)"
+            >
+              <span class="score-label"> COMFORT </span>
+
+              <strong>
+                {{ city.comfortScore | number: '1.0-1' }}
+              </strong>
+
+              <span class="score-out-of"> / 100 </span>
+            </div>
+          </article>
+        }
+      </section>
+
+      @if (lastUpdated) {
+        <div class="last-updated">
+          Last updated:
+          {{ lastUpdated | date: 'medium' }}
+        </div>
+      }
+    }
+  </main>
+</div>
