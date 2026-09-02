@@ -117,7 +117,7 @@ export class WeatherService {
       cityCode,
       cityName: weather.name,
       temperature: weather.main.temp,
-      feelsLike: weather.main.feels_like - 273.15,
+      feelsLike: weather.main.feels_like,
       humidity: weather.main.humidity,
       windSpeed: weather.wind.speed,
       cloudiness: weather.clouds.all,
