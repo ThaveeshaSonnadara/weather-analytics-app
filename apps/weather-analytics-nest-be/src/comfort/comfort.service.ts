@@ -23,10 +23,12 @@ export class ComfortService {
 
   private temperatureScore(temperature: number): number {
     try {
-      // Temperature in celcius (C)
+      // Temperature in celcius (°C)
       const idealTemp = 24;
+      // T°C = K - 273.15
+      const TempInC = temperature - 273.15;
 
-      const diff = Math.abs(temperature - idealTemp);
+      const diff = Math.abs(TempInC - idealTemp);
 
       return this.clamp(100 - diff * 5);
     } catch (error) {
