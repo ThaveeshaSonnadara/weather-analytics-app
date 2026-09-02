@@ -1,9 +1,7 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { CacheService } from './cache.service';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('cache')
-@UseGuards(JwtAuthGuard)
 export class CacheController {
   constructor(private readonly cacheService: CacheService) {}
 
@@ -11,6 +9,14 @@ export class CacheController {
   getStatus() {
     return {
       entries: this.cacheService.getStatus(),
+    };
+  }
+
+  @Get('clear')
+  clearCache() {
+    this.cacheService.clear();
+    return {
+      message: 'In-Memory Cache got cleared',
     };
   }
 }
