@@ -25,10 +25,8 @@ export class ComfortService {
     try {
       // Temperature in celcius (°C)
       const idealTemp = 24;
-      // T°C = K - 273.15
-      const TempInC = temperature - 273.15;
 
-      const diff = Math.abs(TempInC - idealTemp);
+      const diff = Math.abs(temperature - idealTemp);
 
       return this.clamp(100 - diff * 5);
     } catch (error) {
