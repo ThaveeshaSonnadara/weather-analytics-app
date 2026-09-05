@@ -144,6 +144,13 @@
             <strong> {{ city.cloudiness }}% </strong>
           </div>
           }
+
+          @if (city.pressure !== undefined) {
+          <div class="detail">
+            <span>Pressure</span>
+            <strong> {{ city.cloudiness }}hPa </strong>
+          </div>
+          }
         </div>
 
         <!-- Comfort Score -->
