@@ -4,11 +4,14 @@ A full-stack weather analytics application built with Angular on the frontend an
 
 ## Project Overview
 
+<img width="753" height="454" alt="diagram-overview-architecture" src="https://github.com/user-attachments/assets/3ad40310-f92b-4edd-9f12-9cf3e0f826b5" />
+
 This project includes:
 
 - Angular frontend for user authentication and dashboard visualization
 - NestJS backend for weather retrieval and ranking logic
 - Auth0-based access protection for API requests
+
 - In-memory cache for reducing repeated API calls and improving response time
 - Comfort scoring model to rank cities based on weather conditions
 
@@ -19,6 +22,38 @@ This project includes:
 - Authentication: Auth0
 - Weather API: OpenWeatherMap
 - Caching: in-memory Map with TTL-based expiry
+
+## Project Structure
+```
+weather-analytics-app/
+├── apps/
+│   ├── weather-analytics-angular-fe/
+│   │   ├── src/
+│   │   │   ├── app/
+│   │   │   └── environments/
+│   │   ├── angular.json
+│   │   ├── auth_config.json
+│   │   └── project.json
+│   ├── weather-analytics-angular-fe-e2e/
+│   │   ├── src/
+│   │   └── playwright.config.mts
+│   ├── weather-analytics-nest-be/
+│   │   ├── .env.example
+│   │   ├── src/
+│   │   │   ├── app/
+│   │   │   ├── auth/
+│   │   │   ├── cache/
+│   │   │   ├── cities/
+│   │   │   ├── comfort/
+│   │   │   └── weather/
+│   │   ├── project.json
+│   │   └── webpack.config.js
+│   └── weather-analytics-nest-be-e2e/
+│       └── src/
+├── nx.json
+├── package.json
+└── tsconfig.base.json
+```
 
 ---
 
