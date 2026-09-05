@@ -23,6 +23,38 @@ This project includes:
 - Weather API: OpenWeatherMap
 - Caching: in-memory Map with TTL-based expiry
 
+## Project Structure
+```
+weather-analytics-app/
+├── apps/
+│   ├── weather-analytics-angular-fe/
+│   │   ├── src/
+│   │   │   ├── app/
+│   │   │   └── environments/
+│   │   ├── angular.json
+│   │   ├── auth_config.json
+│   │   └── project.json
+│   ├── weather-analytics-angular-fe-e2e/
+│   │   ├── src/
+│   │   └── playwright.config.mts
+│   ├── weather-analytics-nest-be/
+│   │   ├── .env.example
+│   │   ├── src/
+│   │   │   ├── app/
+│   │   │   ├── auth/
+│   │   │   ├── cache/
+│   │   │   ├── cities/
+│   │   │   ├── comfort/
+│   │   │   └── weather/
+│   │   ├── project.json
+│   │   └── webpack.config.js
+│   └── weather-analytics-nest-be-e2e/
+│       └── src/
+├── nx.json
+├── package.json
+└── tsconfig.base.json
+```
+
 ---
 
 ## Setup Instructions
