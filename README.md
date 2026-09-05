@@ -1,10 +1,11 @@
 # Weather Analytics App
+<img src="https://github.com/user-attachments/assets/c14f50c9-2581-406e-823f-233bc23429e4" alt="Weather Analytics Dashboard" width="2612" height="1632" style="border-radius:'2%'"/>
 
 A full-stack weather analytics application built with Angular on the frontend and NestJS on the backend. The app fetches city weather data from OpenWeatherMap, calculates a comfort score for each city, ranks the cities by comfort, and exposes the results through a protected API secured by Auth0 JWT validation.
 
 ## Project Overview
 
-<img width="753" height="454" alt="diagram-overview-architecture" src="https://github.com/user-attachments/assets/3ad40310-f92b-4edd-9f12-9cf3e0f826b5" />
+<img src="https://github.com/user-attachments/assets/3ad40310-f92b-4edd-9f12-9cf3e0f826b5" alt="System Architecture Diagram" width="753" height="454" style="border-radius:'2%'"/>
 
 This project includes:
 
