@@ -111,6 +111,7 @@ export class WeatherService {
       humidity: weather.main.humidity,
       windSpeed: weather.wind.speed,
       cloudiness: weather.clouds.all,
+      pressure: weather.main.pressure,
     });
 
     return {
