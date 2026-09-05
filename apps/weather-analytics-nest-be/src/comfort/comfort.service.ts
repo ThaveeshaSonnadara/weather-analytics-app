@@ -9,16 +9,38 @@ export class ComfortService {
     const humidityScore = this.humidityScore(input.humidity);
     const windScore = this.windScore(input.windSpeed);
     const cloudinessScore = this.cloudinessScore(input.cloudiness);
+    const pressureScore = this.pressureScore(input.pressure);
+
+    // const comfortScore =
+    //   temperatureScore * 0.4 +
+    //   humidityScore * 0.3 +
+    //   windScore * 0.2 +
+    //   cloudinessScore * 0.1;
 
     const comfortScore =
-      temperatureScore * 0.4 +
-      humidityScore * 0.3 +
-      windScore * 0.2 +
-      cloudinessScore * 0.1;
+      temperatureScore * 0.35 +
+      humidityScore * 0.26 +
+      windScore * 0.16 +
+      cloudinessScore * 0.08 +
+      pressureScore * 0.15;
 
     return {
       score: Number(this.clamp(comfortScore).toFixed(1)),
     };
+  }
+
+  private pressureScore(pressure: number) {
+    try {
+      // Ideal pressure in hPa(hectopascal)
+      const idealPressure = 1013;
+      const diff = Math.abs(pressure - idealPressure);
+
+      return this.clamp(100 - diff * 5);
+    } catch (error) {
+      throw new Error(
+        `Something's wrong with "pressureScore" method. ${error.message}`,
+      );
+    }
   }
 
   private temperatureScore(temperature: number): number {
